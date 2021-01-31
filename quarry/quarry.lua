@@ -47,7 +47,8 @@ local function moveUp()
 end
 
 local function refuelFull()
-    print("Initial fuel level : " .. turtle.getFuelLevel())
+    term.setTextColor(colors.yellow)
+    print("Actual fuel level : " .. turtle.getFuelLevel())
     turtle.turnLeft()
     -- TODO take enought to go up and down, and do the line
     while turtle.getFuelLevel() <= 300  do
@@ -59,6 +60,9 @@ local function refuelFull()
         end
     end
     turtle.turnRight()
+    print("Fuel level after refuel : " .. turtle.getFuelLevel())
+    term.setTextColor(colors.white)
+
 end
 
 local function dropAllItems()
