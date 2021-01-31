@@ -1,5 +1,5 @@
-local width = 14 -- only even
-local depth = 14
+local width = 15
+local depth = 15
 
 local function tryDigForward()
     if turtle.detect() then
