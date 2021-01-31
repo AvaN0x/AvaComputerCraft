@@ -49,12 +49,17 @@ local function moveUp()
     end
 end
 
-local function refuelFull()
+local function refuelFull(height)
     term.setTextColor(colors.yellow)
-    print("Actual fuel level : " .. turtle.getFuelLevel())
     turtle.turnLeft()
-    -- TODO take enought to go up and down, and do the line
-    while turtle.getFuelLevel() <= 300  do
+
+    local neededFuel = height * 2 + width * depth
+    if neededFuel < 300 then
+        neededFuel = 300
+    end
+    print("Actual fuel level : " .. turtle.getFuelLevel() .. " (need " .. neededFuel .. ")")
+
+    while turtle.getFuelLevel() <= neededFuel  do
         turtle.suck(1)
         local worked, errorString = turtle.refuel(1)
         if not worked then
@@ -139,7 +144,7 @@ if height > 0 then
     print("Height to mine : " .. height)
     dropAllItems()
     for i=1, height, 1 do
-        refuelFull()
+        refuelFull(height)
 
         term.setTextColor(colors.green)
         print("Now mining height y = y-" .. i)
