@@ -137,6 +137,7 @@ end
 
 if height > 0 then
     print("Height to mine : " .. height)
+    dropAllItems()
     for i=1, height, 1 do
         refuelFull()
 
