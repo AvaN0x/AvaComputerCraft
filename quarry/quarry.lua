@@ -65,7 +65,6 @@ local function refuelFull()
     turtle.turnRight()
     print("Fuel level after refuel : " .. turtle.getFuelLevel())
     term.setTextColor(colors.white)
-
 end
 
 local function dropAllItems()
@@ -140,6 +139,11 @@ if height > 0 then
     print("Height to mine : " .. height)
     for i=1, height, 1 do
         refuelFull()
+
+        term.setTextColor(colors.green)
+        print("Now mining height y = y-" .. i)
+        term.setTextColor(colors.white)
+
         digLineAtHeight(i)
         dropAllItems()
     end
