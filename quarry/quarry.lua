@@ -96,22 +96,24 @@ local function dropAllItems()
     turtle.turnRight()
 end
 
-
+local height = 0
 local startPos = vector.new(gps.locate(5)) -- x, y, z
-if startPos.y then
-    local height = startPos.y - 6
-    print("Height to mine : " .. height)
-    for i=1, height, 1 do
-        refuelFull()
-        for j=1, i, 1 do
-            tryDigDown()
-        end
-        quarryLine()
-        for j=1, i, 1 do
-            tryDigUp()
-        end
-        dropAllItems()
-    end
+if startPos.y ~= 0 then
+    height = startPos.y - 6
 else
-    error("GPS not found !")
+    height = 1
+end
+
+print("Height to mine : " .. height)
+
+for i=1, height, 1 do
+    refuelFull()
+    for j=1, i, 1 do
+        tryDigDown()
+    end
+    quarryLine()
+    for j=1, i, 1 do
+        tryDigUp()
+    end
+    dropAllItems()
 end
