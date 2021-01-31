@@ -8,9 +8,6 @@ local function tryDigForward()
         end
         turtle.suck()
     end
-    while not turtle.forward() do
-        os.sleep(1)
-    end
 end
 
 local function tryDigDown()
@@ -19,9 +16,6 @@ local function tryDigDown()
             error("I got stuck in tryDigDown()")
         end
         turtle.suckDown()
-    end
-    while not turtle.down() do
-        os.sleep(1)
     end
 end
 
@@ -32,6 +26,21 @@ local function tryDigUp()
         end
         turtle.suckUp()
     end
+end
+
+local function moveForward()
+    while not turtle.forward() do
+        os.sleep(1)
+    end
+end
+
+local function moveDown()
+    while not turtle.down() do
+        os.sleep(1)
+    end
+end
+
+local function moveUp()
     while not turtle.up() do
         os.sleep(1)
     end
@@ -41,16 +50,19 @@ local function quarryLine()
     for i=1, width, 1 do
         for j=1, depth - 1, 1 do
             tryDigForward()
+            moveForward()
         end
 
         if i ~= width then
             if i % 2 == 1 then
                 turtle.turnRight()
                 tryDigForward()
+                moveForward()
                 turtle.turnRight()
             else
                 turtle.turnLeft()
                 tryDigForward()
+                moveForward()
                 turtle.turnLeft()
             end
         end
@@ -60,11 +72,13 @@ local function quarryLine()
         turtle.turnRight()
         for j=1, depth - 1, 1 do
             tryDigForward()
+            moveForward()
         end
     end
     turtle.turnRight()
     for j=1, width - 1, 1 do
         tryDigForward()
+        moveForward()
     end
     turtle.turnRight()
 end
@@ -96,6 +110,18 @@ local function dropAllItems()
     turtle.turnRight()
 end
 
+local function digLineAtHeight(height)
+    for j=1, height, 1 do
+        tryDigDown()
+        moveDown()
+    end
+    quarryLine()
+    for j=1, height, 1 do
+        tryDigUp()
+        moveUp()
+    end
+end
+
 local height = 0
 local startPos = vector.new(gps.locate(5)) -- x, y, z
 if startPos.y ~= 0 then
@@ -104,16 +130,13 @@ else
     height = 1
 end
 
-print("Height to mine : " .. height)
-
-for i=1, height, 1 do
-    refuelFull()
-    for j=1, i, 1 do
-        tryDigDown()
-    end
-    quarryLine()
-    for j=1, i, 1 do
-        tryDigUp()
-    end
-    dropAllItems()
+if height > 0 then
+    print("Height to mine : " .. height)
+        for i=1, height, 1 do
+            refuelFull()
+            digLineAtHeight(i)
+            dropAllItems()
+        end
+else
+    error("Height is negative or null.")
 end
