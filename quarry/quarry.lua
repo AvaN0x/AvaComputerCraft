@@ -30,18 +30,21 @@ end
 
 local function moveForward()
     while not turtle.forward() do
+        turtle.attack()
         os.sleep(1)
     end
 end
 
 local function moveDown()
     while not turtle.down() do
+        turtle.attackDown()
         os.sleep(1)
     end
 end
 
 local function moveUp()
     while not turtle.up() do
+        turtle.attackUp()
         os.sleep(1)
     end
 end
