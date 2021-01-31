@@ -46,6 +46,32 @@ local function moveUp()
     end
 end
 
+local function refuelFull()
+    print("Initial fuel level : " .. turtle.getFuelLevel())
+    turtle.turnLeft()
+    -- TODO take enought to go up and down, and do the line
+    while turtle.getFuelLevel() <= 300  do
+        turtle.suck(1)
+        local worked, errorString = turtle.refuel(1)
+        if not worked then
+            turtle.turnRight()
+            error(errorString)
+        end
+    end
+    turtle.turnRight()
+end
+
+local function dropAllItems()
+    turtle.turnLeft()
+    turtle.turnLeft()
+    for i = 1, 16, 1 do -- 16 slots
+        turtle.select(i)
+        turtle.drop()
+    end
+    turtle.turnRight()
+    turtle.turnRight()
+end
+
 local function quarryLine()
     for i=1, width, 1 do
         for j=1, depth - 1, 1 do
@@ -83,33 +109,6 @@ local function quarryLine()
     turtle.turnRight()
 end
 
-
-local function refuelFull()
-    print("Initial fuel level : " .. turtle.getFuelLevel())
-    turtle.turnLeft()
-    -- TODO take enought to go up and down, and do the line
-    while turtle.getFuelLevel() <= 300  do
-        turtle.suck(1)
-        local worked, errorString = turtle.refuel(1)
-        if not worked then
-            turtle.turnRight()
-            error(errorString)
-        end
-    end
-    turtle.turnRight()
-end
-
-local function dropAllItems()
-    turtle.turnLeft()
-    turtle.turnLeft()
-    for i = 1, 16, 1 do -- 16 slots
-        turtle.select(i)
-        turtle.drop()
-    end
-    turtle.turnRight()
-    turtle.turnRight()
-end
-
 local function digLineAtHeight(height)
     for j=1, height, 1 do
         tryDigDown()
@@ -127,16 +126,16 @@ local startPos = vector.new(gps.locate(5)) -- x, y, z
 if startPos.y ~= 0 then
     height = startPos.y - 6
 else
-    height = 1
+    height = 2
 end
 
 if height > 0 then
     print("Height to mine : " .. height)
-        for i=1, height, 1 do
-            refuelFull()
-            digLineAtHeight(i)
-            dropAllItems()
-        end
+    for i=1, height, 1 do
+        refuelFull()
+        digLineAtHeight(i)
+        dropAllItems()
+    end
 else
     error("Height is negative or null.")
 end
