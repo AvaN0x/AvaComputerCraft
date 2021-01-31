@@ -1,3 +1,8 @@
+-------------------------------------------
+-------- MADE BY GITHUB.COM/AVAN0X --------
+--------------- AvaN0x#6348 ---------------
+-------------------------------------------
+
 local width = 15
 local depth = 15
 
@@ -83,6 +88,18 @@ local function dropAllItems()
     turtle.turnRight()
 end
 
+local function detectStartingHeight()
+    local startingHeight = 1
+    while not turtle.detectDown() do
+        startingHeight = startingHeight + 1
+        moveDown()
+    end
+    for i=1, startingHeight - 1, 1 do
+        moveUp()
+    end
+    return startingHeight
+end
+
 local function quarryLine()
     for i=1, width, 1 do
         for j=1, depth - 1, 1 do
@@ -137,13 +154,14 @@ local startPos = vector.new(gps.locate(5)) -- x, y, z
 if startPos.y ~= 0 then
     height = startPos.y - 6
 else
-    height = 2
+    height = 10
 end
 
 if height > 0 then
     print("Height to mine : " .. height)
     dropAllItems()
-    for i=1, height, 1 do
+    local startingHeight = detectStartingHeight()
+    for i=startingHeight, height, 1 do
         refuelFull(height)
 
         term.setTextColor(colors.green)
