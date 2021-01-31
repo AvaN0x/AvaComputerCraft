@@ -90,9 +90,8 @@ end
 
 local function detectStartingHeight()
     local startingHeight = 1
-    while not turtle.detectDown() do
+    while turtle.down() do
         startingHeight = startingHeight + 1
-        moveDown()
     end
     for i=1, startingHeight - 1, 1 do
         moveUp()
@@ -161,9 +160,12 @@ if height > 0 then
     print("Height to mine : " .. height)
     dropAllItems()
     local startingHeight = detectStartingHeight()
+    term.setTextColor(colors.green)
+    print("Starting mining at height y = y-"..startingHeight)
+    term.setTextColor(colors.white)
     for i=startingHeight, height, 1 do
         refuelFull(height)
-
+        
         term.setTextColor(colors.green)
         print("Now mining height y = y-" .. i)
         term.setTextColor(colors.white)
